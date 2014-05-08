@@ -15,12 +15,17 @@
     </head>
     <body>
         <div class="container">
+            <!-- Suggested iframe tag -->
             <iframe id="sweepstakes-widget" src="http://exposuremarketing.github.io/iframe-example/" frameBorder="0"></iframe>
+            <!-- Suggested JavaScript for auto-resize -->
             <script>
+                /**
+                 * Callback to receive parent.postMessage calls from the
+                 * iframe, and set the height appropriately
+                 */
                 function receiveMessage(event) {
-                    if (event.origin != 'http://exposuremarketing.github.io')
-                    {
-                        // origin doesn't match expected, return
+                    // Change this to the origin of your iframe!
+                    if ('http://exposuremarketing.github.io' != event.origin) {
                         return;
                     }
 
@@ -40,11 +45,15 @@
                         console.log(event.data)
                     }
 
+                    // Set height
                     if ('setHeight' == eventName) {
                         document.getElementById('sweepstakes-widget').height = data
                     }
                 }
 
+                /**
+                 * Bind the receiveMessage callback to the message event
+                 */
                 if (window.addEventListener) {
                     window.addEventListener("message", receiveMessage, false)
                 }
