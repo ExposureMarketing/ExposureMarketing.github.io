@@ -41,9 +41,8 @@
 
             var setHeight = debounce(function() {
                 var body = document.body
-                  , html = document.documentElement
 
-                parent.postMessage(["setHeight", Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)], '*')
+                parent.postMessage(["setHeight", Math.max(body.clientHeight, body.scrollHeight, body.offsetHeight)], '*')
             }, 250)
 
             if (window.addEventListener) {
