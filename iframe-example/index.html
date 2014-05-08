@@ -44,7 +44,7 @@
                   , html = document.documentElement
 
                 parent.postMessage(["setHeight", Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)], '*')
-            }, 500)
+            }, 250)
 
             if (window.addEventListener) {
                 window.addEventListener('load', setHeight)

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .container {
+                max-width:700px;
+                margin:0 auto;
+            }
+
+            #sweepstakes-widget {
+                width:100%;
+                border:none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <iframe id="sweepstakes-widget" src="http://exposuremarketing.github.io/iframe-example/" frameBorder="0"></iframe>
+            <script>
+                function receiveMessage(event) {
+                    if (event.origin != 'http://exposuremarketing.github.io')
+                    {
+                        // origin doesn't match expected, return
+                        return;
+                    }
+
+                    // IE 8 & 9 postMessage an array as a string!
+                    var tmp
+                    if ('string' === typeof event.data) {
+                        tmp = event.data.split(',')
+                    }
+                    else {
+                        tmp = event.data
+                    }
+
+                    var eventName = tmp[0]
+                      , data = tmp[1]
+
+                    if ('function' === typeof console.log) {
+                        console.log(event.data)
+                    }
+
+                    if ('setHeight' == eventName) {
+                        document.getElementById('sweepstakes-widget').height = data
+                    }
+                }
+
+                if (window.addEventListener) {
+                    window.addEventListener("message", receiveMessage, false)
+                }
+                else if(window.attachEvent) {
+                    // IE8
+                    window.attachEvent("onmessage", receiveMessage)
+                }
+            </script>
+        </div>
+    </body>
+</html>
