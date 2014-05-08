@@ -1,15 +1,60 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <style>
+
+            body {
+                margin:0;
+                padding:20px 20px;
+                border:1px dashed #000;
+            }
+        </style>
     </head>
     <body>
-        <h1>Hello world!</h1>
-        <p>This is an example of iframe content</p>
+        <h2>Hello world!</h2>
+        <p>
+            This is an example of iframe content. The border belongs to
+            the <code>body</code> tag of this document.
+        </p>
         <p>
             When this page loads, and resizes, it uses <code>window.postMessage</code>
             to try and inform its parent of its height. The format of the
             message is:
         </p>
-        <code>['setHeight', height]</code>
+        <p>
+            <code>['setHeight', height]</code>
+        </p>
+
+        <script>
+            function debounce(func, wait, immediate) {
+                var timeout
+                return function() {
+                    var context = this, args = arguments
+                    clearTimeout(timeout)
+                    timeout = setTimeout(function() {
+                        timeout = null
+                        if (!immediate) func.apply(context, args)
+                    }, wait)
+                    if (immediate && !timeout) func.apply(context, args)
+                }
+            }
+
+            var setHeight = debounce(function() {
+                var body = document.body
+                  , html = document.documentElement
+
+                parent.postMessage(["setHeight", Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)], '*')
+            }, 500)
+
+            if (window.addEventListener) {
+                window.addEventListener('load', setHeight)
+                window.addEventListener('resize', setHeight)
+            }
+            else if(window.attachEvent) {
+                // IE8
+                window.attachEvent('onload', setHeight)
+                window.attachEvent('onresize', setHeight)
+            }
+        </script>
     </body>
 </html>
